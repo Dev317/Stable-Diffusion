@@ -1,3 +1,0 @@
-models/models--MIT--ast-finetuned-audioset-10-10-0.4593 filter=lfs diff=lfs merge=lfs -text
-models/models--CompVis--stable-diffusion-v1-4 filter=lfs diff=lfs merge=lfs -text
-models/models--openai--clip-vit-large-patch14 filter=lfs diff=lfs merge=lfs -text
