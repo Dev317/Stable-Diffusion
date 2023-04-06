@@ -13,8 +13,6 @@ from diffusers.schedulers.scheduling_ddim import DDIMScheduler
 from transformers import CLIPTextModel, CLIPTokenizer, AutoProcessor, ASTModel
 from tqdm.auto import tqdm
 
-from IPython.display import HTML
-
 import librosa
 
 import platform
