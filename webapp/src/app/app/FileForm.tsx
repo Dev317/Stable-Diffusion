@@ -64,9 +64,10 @@ export default function FileForm() {
 				const responseData = await fetchResponse(files[0]);
 				console.log(responseData);
 				const encodedImageURI = encodeURIComponent(responseData.image);
+				const {category, probability} = responseData;
 				startTransition(() => {
 					router.push(
-						`app/?image=${encodedImageURI}&category=${responseData.category}`,
+						`app/?image=${encodedImageURI}&category=${category}&probability=${probability}`,
 					);
 				});
 			} catch (err) {

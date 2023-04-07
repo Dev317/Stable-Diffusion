@@ -8,6 +8,7 @@ interface PageParams {
 	searchParams: {
 		image?: string;
 		category?: string;
+		probability?: number;
 	};
 }
 
@@ -35,6 +36,7 @@ export default function Home({searchParams}: PageParams) {
 					<MediaPreview
 						image={searchParams.image}
 						category={searchParams.category}
+						probability={searchParams.probability}
 					/>
 				) : (
 					<div className="w-96">

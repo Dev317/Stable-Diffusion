@@ -6,14 +6,19 @@ import {useFilesContext} from "./layout";
 export interface MediaPreviewProps {
 	image: string;
 	category?: string;
+	probability?: number;
 }
 
-export default function MediaPreview({image, category}: MediaPreviewProps) {
+export default function MediaPreview({
+	image,
+	category,
+	probability,
+}: MediaPreviewProps) {
 	const {files} = useFilesContext();
 	return (
 		<div className="flex flex-col gap-4 items-center">
 			<p className="p-3 bg-gray-200/30 dark:bg-zinc-800/30 rounded-xl border border-gray-300 dark:border-neutral-800 backdrop-blur-2xl text-sm font-medium">
-				{category}
+				{category}, {Number((probability ?? 0) * 100).toFixed(1)}%
 			</p>
 			<div className="relative">
 				<Image
