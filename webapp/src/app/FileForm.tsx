@@ -77,11 +77,14 @@ export default function FileForm() {
 					-&gt;
 				</button>
 			</form>
-			{isMutating && (
-				<div className="absolute inset-0 flex justify-center items-center">
-					<Loader />
-				</div>
-			)}
+			<div
+				className={twMerge(
+					"absolute inset-0 flex justify-center items-center opacity-0 transition-opacity duration-1000 pointer-events-none",
+					isMutating && "opacity-100",
+				)}
+			>
+				<Loader />
+			</div>
 		</div>
 	);
 }
