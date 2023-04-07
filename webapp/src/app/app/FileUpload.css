@@ -1,5 +1,5 @@
 .filepond--root {
-	@apply !border !rounded-xl !border-gray-300 !bg-gray-200/30 !backdrop-blur-2xl;
+	@apply !mb-0 !border !rounded-xl !border-gray-300 !bg-gray-200/30 !backdrop-blur-2xl;
 	@apply dark:!border-neutral-800 dark:!from-inherit dark:!bg-zinc-800/30;
 }
 

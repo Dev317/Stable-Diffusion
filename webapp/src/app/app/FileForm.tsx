@@ -9,9 +9,9 @@ import {
 	useTransition,
 } from "react";
 import {twMerge} from "tailwind-merge";
-import {FilePondFile} from "filepond";
 import {useRouter} from "next/navigation";
 import Loader from "./Loader";
+import {useFilesContext} from "./layout";
 
 const inter = Inter({subsets: ["latin"]});
 
@@ -26,7 +26,8 @@ export default function FileForm() {
 	const [isFetching, setIsFetching] = useState(false);
 	const isMutating = isPending || isFetching;
 
-	const [files, setFiles] = useState<FilePondFile["file"][]>([]);
+	const {files, setFiles} = useFilesContext();
+
 	const handleSubmit = useCallback(
 		async (ev: FormEvent<HTMLFormElement>) => {
 			ev.preventDefault();
@@ -64,18 +65,20 @@ export default function FileForm() {
 				method="POST"
 				action="/api/audio2image"
 				className={twMerge(
-					"relative flex flex-col items-center gap-4 opacity-0 transition-opacity duration-1000",
+					"relative flex items-center gap-4 opacity-0 transition-opacity duration-1000",
 					show && "opacity-100",
 					isMutating && "opacity-50 animate-pulse",
 				)}
 			>
 				<FileUpload required files={files} onFilesChange={setFiles} />
-				<button
-					type="submit"
-					className={`${inter.className} text-white bg-blue-700 px-4 py-2 aspect-square rounded-full hover:bg-blue-600 hover:shadow hover:shadow-blue-700/50 transition-all duration-500`}
-				>
-					-&gt;
-				</button>
+				{files.length > 0 && (
+					<button
+						type="submit"
+						className={`${inter.className} text-white bg-blue-700 aspect-square rounded-full hover:bg-blue-600 hover:shadow hover:shadow-blue-700/50 transition-all duration-500 w-16 h-16 flex items-center justify-center`}
+					>
+						-&gt;
+					</button>
+				)}
 			</form>
 			<div
 				className={twMerge(
