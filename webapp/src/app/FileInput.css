@@ -1,0 +1,20 @@
+.filepond--root {
+	@apply !border !rounded-xl !border-gray-300 !bg-gray-200/30 !backdrop-blur-2xl;
+	@apply dark:!border-neutral-800 dark:!from-inherit dark:!bg-zinc-800/30;
+}
+
+.filepond--drop-label {
+	@apply text-foreground;
+}
+
+.filepond--panel {
+	@apply hidden;
+}
+
+.filepond--file {
+	@apply text-foreground;
+}
+
+.filepond--file-action-button {
+	@apply text-foreground disabled:text-foreground/20 hover:ring-2 ring-foreground/30;
+}
