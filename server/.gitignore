@@ -1,5 +1,6 @@
 models/models--CompVis--stable-diffusion-v1-4
 models/models--MIT--ast-finetuned-audioset-10-10-0.4593
 models/models--openai--clip-vit-large-patch14
+upload/temp.wav
 __pycache__/
 .env
