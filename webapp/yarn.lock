@@ -1463,6 +1463,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"filepond-plugin-media-preview@npm:^1.0.11":
+  version: 1.0.11
+  resolution: "filepond-plugin-media-preview@npm:1.0.11"
+  peerDependencies:
+    filepond: ">=4.x <5.x"
+  checksum: 9b47cd68d804bc881ee38b9064379ae26918e2fac0b33cce4a230b11ba356910d7b3069dc00dfb81409110c2a15d5e028d0108f7b318ab5f7d042950ed910c0d
+  languageName: node
+  linkType: hard
+
+"filepond@npm:^4.30.4":
+  version: 4.30.4
+  resolution: "filepond@npm:4.30.4"
+  checksum: ec1c06a11ceda231e5589f52307fa2f34b9c67c14b22c2be7adde227159f32e9ed1aa0e0a32fbca4e08a837b6714084e9f629c097a669fc1c3076be8c5f3c295
+  languageName: node
+  linkType: hard
+
 "fill-range@npm:^7.0.1":
   version: 7.0.1
   resolution: "fill-range@npm:7.0.1"
@@ -3083,6 +3099,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-filepond@npm:^7.1.2":
+  version: 7.1.2
+  resolution: "react-filepond@npm:7.1.2"
+  peerDependencies:
+    filepond: ">=3.7.x < 5.x"
+    react: 16 - 18
+    react-dom: 16 - 18
+  checksum: 5aaa41dff2c3b3330442c521c3d73505b73bc14a3989c3e62f5e48de52d07904e1146280ec926fd805d7571b9ec14eec71769e55205f80ed0154094c48242b8f
+  languageName: node
+  linkType: hard
+
 "react-is@npm:^16.13.1":
   version: 16.13.1
   resolution: "react-is@npm:16.13.1"
@@ -3559,6 +3586,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"tailwind-merge@npm:^1.12.0":
+  version: 1.12.0
+  resolution: "tailwind-merge@npm:1.12.0"
+  checksum: 5ef323eec1051c4aa9626e29498f6c058dbbb242ca8156aa298de41ada3eda05a8f5f1260a57112c155f63b2e94c4b4ccab5386d60fae54de07aac6d9dbc60e4
+  languageName: node
+  linkType: hard
+
 "tailwindcss@npm:3.3.1":
   version: 3.3.1
   resolution: "tailwindcss@npm:3.3.1"
@@ -3822,11 +3856,15 @@ __metadata:
     autoprefixer: 10.4.14
     eslint: 8.37.0
     eslint-config-next: 13.3.0
+    filepond: ^4.30.4
+    filepond-plugin-media-preview: ^1.0.11
     next: 13.3.0
     postcss: 8.4.21
     prettier: ^2.8.7
     react: 18.2.0
     react-dom: 18.2.0
+    react-filepond: ^7.1.2
+    tailwind-merge: ^1.12.0
     tailwindcss: 3.3.1
     typescript: 5.0.3
   languageName: unknown
