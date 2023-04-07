@@ -1,2 +1,3 @@
-models/
+/server/models/
+/server/.env
 __pycache__/
