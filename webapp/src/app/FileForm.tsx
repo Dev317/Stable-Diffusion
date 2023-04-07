@@ -38,11 +38,11 @@ export default function FileForm() {
 					body: data,
 				});
 				const responseData = await response.json();
-				if (!("image" in responseData)) {
-				}
 				const encodedImageURI = encodeURIComponent(responseData.image);
 				startTransition(() => {
-					router.push(`/?image=${encodedImageURI}`);
+					router.push(
+						`/?image=${encodedImageURI}&category=${responseData.category}`,
+					);
 				});
 			} catch (err) {
 				console.error(err);
