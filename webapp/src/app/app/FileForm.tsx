@@ -12,8 +12,36 @@ import {twMerge} from "tailwind-merge";
 import {useRouter} from "next/navigation";
 import Loader from "./Loader";
 import {useFilesContext} from "./layout";
+import {FilePondFile} from "filepond";
 
 const inter = Inter({subsets: ["latin"]});
+
+async function fetchResponse(file: FilePondFile["file"]) {
+	if (process.env.NEXT_PUBLIC_MOCK_API === "TRUE") {
+		await new Promise((res) => {
+			setTimeout(res, 6000);
+		});
+		return {
+			image: "/dog.jpg",
+			category: "dog bark",
+			image_title: "dog",
+			width: 512,
+			height: 512,
+			probability: 0.85,
+		};
+	}
+
+	const data = new FormData();
+	data.append("wav_file", file);
+	const response = await fetch(
+		`${process.env.NEXT_PUBLIC_AUDIO_TO_IMAGE_API_HOST}/api/audio2image`,
+		{
+			method: "POST",
+			body: data,
+		},
+	);
+	return await response.json();
+}
 
 export default function FileForm() {
 	const [show, setShow] = useState(false);
@@ -33,17 +61,8 @@ export default function FileForm() {
 			ev.preventDefault();
 			try {
 				setIsFetching(true);
-				const data = new FormData();
-				data.append("wav_file", files[0]);
-				// await new Promise((res) => {
-				// 	setTimeout(res, 6000);
-				// });
-				const response = await fetch(`http://localhost:5001/api/audio2image`, {
-					method: "POST",
-					body: data,
-				});
-				const responseData = await response.json();
-				console.log(responseData)
+				const responseData = await fetchResponse(files[0]);
+				console.log(responseData);
 				const encodedImageURI = encodeURIComponent(responseData.image);
 				startTransition(() => {
 					router.push(
