@@ -7,6 +7,9 @@ import json
 import boto3
 import uuid
 import tensorflow as tf
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
