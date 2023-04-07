@@ -32,7 +32,9 @@ export default function FileUpload({
 	);
 
 	return (
-		<div className={`${inter.className} w-full min-h-28`}>
+		<div
+			className={`${inter.className} w-full min-h-28 flex items-center justify-stretch`}
+		>
 			<FilePond
 				name="wav_file"
 				files={files}
