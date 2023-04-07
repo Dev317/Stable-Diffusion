@@ -45,7 +45,7 @@ export default function FileForm() {
 				const encodedImageURI = encodeURIComponent(responseData.image);
 				startTransition(() => {
 					router.push(
-						`/?image=${encodedImageURI}&category=${responseData.category}`,
+						`app/?image=${encodedImageURI}&category=${responseData.category}`,
 					);
 				});
 			} catch (err) {
