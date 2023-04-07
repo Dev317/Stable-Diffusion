@@ -12,9 +12,17 @@
 }
 
 .filepond--file {
-	@apply text-foreground;
+	@apply bg-black/25 dark:bg-transparent backdrop-blur-2xl;
 }
 
 .filepond--file-action-button {
-	@apply text-foreground disabled:text-foreground/20 hover:ring-2 ring-foreground/30;
+	@apply text-white disabled:text-white/20 hover:ring-2 ring-white/30;
+}
+
+.filepond--credits {
+	@apply hidden;
+}
+
+.filepond--media-preview-wrapper {
+	@apply before:content-none text-white;
 }
