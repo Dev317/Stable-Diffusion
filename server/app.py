@@ -25,7 +25,7 @@ def get_image():
 
     prompt = f"Create an image of the following category: {category}"
 
-    plt_img = prompt_to_img(prompts=prompt, height=512, width=512, num_inference_steps=30)[0]
+    plt_img = prompt_to_img(prompts=prompt, height=512, width=512, num_inference_steps=5)[0]
     buffered = BytesIO()
     plt_img.save(buffered, format="JPEG")
     buffered.seek(0)
