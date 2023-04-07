@@ -10,6 +10,8 @@ A machine that is capable of running TensorFlow and PyTorch.
 
 ### Installation
 
+Navigate to `/server`.
+
 Install all dependencies within `requirements.txt`. This step depends on the system architecture you are currently using.
 
 If using Anaconda / Minicoda, create a new environment specifically for this project:
@@ -29,6 +31,8 @@ Download the pre-trained models.
 ```bash
 $ python3 download.py
 ```
+
+Lastly, set the environment variables required by copying `.env.sample` into `.env`.
 
 ### Run
 
