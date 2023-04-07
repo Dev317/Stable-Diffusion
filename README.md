@@ -2,6 +2,19 @@
 
 An audio-thumbnail generator.
 
+Currently, the application is able to classify these 10 sounds:
+
+- Air Conditioner
+- Car Horn
+- Children Playing
+- Dog bark
+- Drilling
+- Engine Idling
+- Gun Shot
+- Jackhammer
+- Siren
+- Street Music
+
 ## Server
 
 ### Requirements
