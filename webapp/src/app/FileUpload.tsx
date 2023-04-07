@@ -23,7 +23,7 @@ export default function FileUpload({required}: FileUploadProps) {
 	return (
 		<div className="w-96 min-h-20">
 			<FilePond
-				name="file"
+				name="wav_file"
 				files={files}
 				onupdatefiles={handleFilesUpdate}
 				required={required}
