@@ -1,5 +1,5 @@
 "use client";
-import {useCallback, useState} from "react";
+import {Dispatch, useCallback} from "react";
 import {FilePondFile} from "filepond";
 import {FilePond, registerPlugin} from "react-filepond";
 import FilePondPluginMediaPreview from "filepond-plugin-media-preview";
@@ -12,13 +12,21 @@ registerPlugin(FilePondPluginMediaPreview);
 
 export interface FileUploadProps {
 	required?: boolean;
+	files?: FilePondFile["file"][];
+	onFilesChange?: Dispatch<FilePondFile["file"][]>;
 }
 
-export default function FileUpload({required}: FileUploadProps) {
-	const [files, setFiles] = useState<FilePondFile["file"][]>([]);
-	const handleFilesUpdate = useCallback((files: FilePondFile[]) => {
-		setFiles(files.map((f) => f.file));
-	}, []);
+export default function FileUpload({
+	required,
+	files,
+	onFilesChange,
+}: FileUploadProps) {
+	const handleFilesUpdate = useCallback(
+		(files: FilePondFile[]) => {
+			onFilesChange?.(files.map((f) => f.file));
+		},
+		[onFilesChange],
+	);
 
 	return (
 		<div className="w-96 min-h-20">
