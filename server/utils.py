@@ -157,7 +157,7 @@ classes = {
     5: "engine idling",
     6: "gun shot",
     7: "jackhammer",
-    8: "siren",
+    8: "police siren",
     9: "street music",
 }
 
