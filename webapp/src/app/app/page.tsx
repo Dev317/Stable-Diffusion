@@ -43,17 +43,19 @@ export default function Home({searchParams}: PageParams) {
 						<FileForm />
 					</div>
 				)}
-				<div className="w-96 flex flex-col gap-4 text-sm text-blue-800 dark:text-blue-200 bg-blue-200/30 border border-blue-300 rounded-xl p-4">
-					<p>
-						This application was built as an MVP for an audio-to-image
-						classification project.
-					</p>
-					<p>
-						Our audio classification and image generation server is no longer
-						online, but the application will mock a response for demonstration
-						purposes.
-					</p>
-				</div>
+				{process.env.NEXT_PUBLIC_MOCK_API === "TRUE" && (
+					<div className="w-96 flex flex-col gap-4 text-sm text-blue-800 dark:text-blue-200 bg-blue-200/30 border border-blue-300 rounded-xl p-4">
+						<p>
+							This application was built as an MVP for an audio-to-image
+							classification project.
+						</p>
+						<p>
+							Our audio classification and image generation server is no longer
+							online, but the application will mock a response for demonstration
+							purposes.
+						</p>
+					</div>
+				)}
 			</div>
 
 			<footer className="w-full max-w-5xl mb-32 grid text-center lg:mb-0 lg:grid-cols-3 lg:text-left">
