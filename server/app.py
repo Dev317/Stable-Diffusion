@@ -13,7 +13,6 @@ cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 BUCKET_NAME = os.environ.get('BUCKET_NAME', 'pil-test-image')
 
-
 @app.route('/api/audio2image', methods=['POST'])
 def get_image():
     dirname = 'upload'

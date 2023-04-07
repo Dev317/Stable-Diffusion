@@ -16,7 +16,7 @@ export default function About() {
 						target="_blank"
 						rel="noopener noreferrer"
 					>
-						By Troll Class Team 1
+						By AudioVisio
 					</a>
 				</div>
 			</div>
