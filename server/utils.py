@@ -7,11 +7,7 @@ from transformers import CLIPTextModel, CLIPTokenizer
 from tqdm.auto import tqdm
 
 import librosa
-from scipy.io import wavfile as wav
-import pandas as pd
 import numpy as np
-from sklearn.preprocessing import LabelEncoder
-import tensorflow as tf
 
 device = 'cpu'
 

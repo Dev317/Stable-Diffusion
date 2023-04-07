@@ -1,4 +1,3 @@
-
 import os
 from flask import Flask, request
 from flask_cors import CORS
@@ -12,7 +11,7 @@ import tensorflow as tf
 app = Flask(__name__)
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 
-BUCKET_NAME = os.environ['BUCKET_NAME']
+BUCKET_NAME = os.environ.get('BUCKET_NAME', 'pil-test-image')
 
 
 @app.route('/api/audio2image', methods=['POST'])
