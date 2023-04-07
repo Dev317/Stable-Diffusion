@@ -1,18 +1,29 @@
 
 import os
 from flask import Flask, request
-from utils import prompt_to_img
+from utils import prompt_to_img, predict
 from io import BytesIO
 import json
 import boto3
 import uuid
+import tensorflow as tf
 
 app = Flask(__name__)
 
-@app.route('/api/prompt2image', methods=['POST'])
+@app.route('/api/audio2image', methods=['POST'])
 def get_image():
-    request_data = request.get_json()
-    plt_img = prompt_to_img(prompts=request_data['prompt'], height=512, weight=512, num_inference_steps=30)[0]
+    dirname = 'upload'
+    save_path = os.path.join(dirname, "temp.wav")
+    request.files['wav_file'].save(save_path)
+    print(save_path)
+
+    model = tf.keras.models.load_model('./weights.best.basic_cnn.hdf5')
+
+    category = predict(save_path, model)
+
+    prompt = f"Create an image of the following category: {category}"
+
+    plt_img = prompt_to_img(prompts=prompt, height=512, width=512, num_inference_steps=30)[0]
     buffered = BytesIO()
     plt_img.save(buffered, format="JPEG")
     buffered.seek(0)
@@ -35,5 +46,5 @@ def get_image():
 
 
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000))
+    port = int(os.environ.get('PORT', 5001))
     app.run(host='0.0.0.0', port=port, debug=True)

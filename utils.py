@@ -6,6 +6,13 @@ from diffusers import UNet2DConditionModel, LMSDiscreteScheduler
 from transformers import CLIPTextModel, CLIPTokenizer
 from tqdm.auto import tqdm
 
+import librosa
+from scipy.io import wavfile as wav
+import pandas as pd
+import numpy as np
+from sklearn.preprocessing import LabelEncoder
+import tensorflow as tf
+
 device = 'cpu'
 
 # 1. Load the autoencoder model which will be used to decode the latents into image space.
@@ -129,3 +136,49 @@ def prompt_to_img(prompts,
     imgs = decode_img_latents(latents)
 
     return imgs
+
+
+max_pad_len = 174
+num_rows = 40
+num_columns = 174
+num_channels = 1
+
+classes = {
+    0 : "air conditioner",
+    1 : "car horn",
+    2 : "children playing",
+    3 : "dog bark",
+    4 : "drilling",
+    5 : "engine idling",
+    6 : "gun shot",
+    7 : "jackhammer",
+    8 : "siren",
+    9 : "street music",
+}
+
+def extract_features(file_name):
+    try:
+        audio, sample_rate = librosa.load(file_name, res_type='kaiser_fast')
+        mfccs = librosa.feature.mfcc(y=audio, sr=sample_rate, n_mfcc=40)
+        pad_width = max_pad_len - mfccs.shape[1]
+
+        if pad_width > 0:
+            mfccs = np.pad(mfccs, pad_width=((0, 0), (0, pad_width)), mode='constant')
+        else:
+            mfccs = np.delete(mfccs, np.s_[max_pad_len::1], 1)
+
+    except Exception as e:
+        print(str(e))
+        return None
+
+    return mfccs
+
+
+def predict(file_name, model):
+    prediction_feature = extract_features(file_name)
+    prediction_feature = prediction_feature.reshape(1, num_rows, num_columns, num_channels)
+
+    predicted_vector = model.predict(prediction_feature)
+    predicted_class = np.argmax(predicted_vector)
+
+    return classes[predicted_class]
