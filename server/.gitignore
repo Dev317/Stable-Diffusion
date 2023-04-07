@@ -1,3 +1,4 @@
 models/
+upload/temp.wav
 __pycache__/
 .env
