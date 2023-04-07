@@ -175,6 +175,17 @@ def predict(file_name, model):
     prediction_feature = prediction_feature.reshape(1, num_rows, num_columns, num_channels)
 
     predicted_vector = model.predict(prediction_feature)
+    predicted_vector = np.float64(predicted_vector)
+
+    print(predicted_vector)
+
+    probabilities_dict = {}
+
+    for i in range(len(predicted_vector[0])):
+        probabilities_dict[classes[i]] = predicted_vector[0][i]
+
+    print(probabilities_dict)
+
     predicted_class = np.argmax(predicted_vector)
 
-    return classes[predicted_class]
+    return classes[predicted_class], probabilities_dict

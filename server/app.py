@@ -19,12 +19,12 @@ def get_image():
     save_path = os.path.join(dirname, "temp.wav")
     request.files['wav_file'].save(save_path)
 
-    model = tf.keras.models.load_model('./weights.best.basic_cnn.hdf5')
-    category = predict(save_path, model)
+    model = tf.keras.models.load_model('./models/audio_class/weights.best.basic_cnn.hdf5')
+    category, probabilities_dict = predict(save_path, model)
 
     prompt = f"Create an image of the following category: {category}"
 
-    plt_img = prompt_to_img(prompts=prompt, height=512, width=512, num_inference_steps=15)[0]
+    plt_img = prompt_to_img(prompts=prompt, height=512, width=512, num_inference_steps=5)[0]
     buffered = BytesIO()
     plt_img.save(buffered, format="JPEG")
     buffered.seek(0)
@@ -40,6 +40,7 @@ def get_image():
         "category": category,
         "width": 512,
         "height" : 512,
+        "probability": probabilities_dict[category]
     })
 
     return response_body, 200
@@ -47,4 +48,4 @@ def get_image():
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5001))
-    app.run(host='0.0.0.0', port=port, debug=False, threaded=True)
+    app.run(host='0.0.0.0', port=port, debug=True, threaded=True)
