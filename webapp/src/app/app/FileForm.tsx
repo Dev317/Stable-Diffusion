@@ -38,11 +38,12 @@ export default function FileForm() {
 				// await new Promise((res) => {
 				// 	setTimeout(res, 6000);
 				// });
-				const response = await fetch(`/api/audio2image`, {
+				const response = await fetch(`http://localhost:5001/api/audio2image`, {
 					method: "POST",
 					body: data,
 				});
 				const responseData = await response.json();
+				console.log(responseData)
 				const encodedImageURI = encodeURIComponent(responseData.image);
 				startTransition(() => {
 					router.push(
