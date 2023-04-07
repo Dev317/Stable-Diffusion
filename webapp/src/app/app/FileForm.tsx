@@ -35,9 +35,9 @@ export default function FileForm() {
 				setIsFetching(true);
 				const data = new FormData();
 				data.append("wav_file", files[0]);
-				await new Promise((res) => {
-					setTimeout(res, 6000);
-				});
+				// await new Promise((res) => {
+				// 	setTimeout(res, 6000);
+				// });
 				const response = await fetch(`/api/audio2image`, {
 					method: "POST",
 					body: data,
