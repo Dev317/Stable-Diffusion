@@ -18,13 +18,19 @@ If using Anaconda / Minicoda, create a new environment specifically for this pro
 $ conda env create -f environment.yml
 ```
 
-### Run
-
 Activate the `audio-diffusion` environment.
 
 ```bash
 $ conda activate audio-diffusion
 ```
+
+Download the pre-trained models.
+
+```bash
+$ python3 download.py
+```
+
+### Run
 
 ```bash
 $ python3 app.py

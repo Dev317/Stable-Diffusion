@@ -49,11 +49,13 @@ vae = vae.to(device)
 # 2. Load the tokenizer and text encoder to tokenize and encode the text.
 # tokenizer = CLIPTokenizer.from_pretrained('openai/clip-vit-large-patch14', torch_dtype=torch.float32, cache_dir=os.getenv("cache_dir", "./models"))
 TOKENIZER_PATH = './models/models--openai--clip-vit-large-patch14/snapshots/8d052a0f05efbaefbc9e8786ba291cfdf93e5bff'
-tokenizer = CLIPTokenizer.from_pretrained(TOKENIZER_PATH, local_files_only=True)
+tokenizer = CLIPTokenizer.from_pretrained(
+    TOKENIZER_PATH, local_files_only=True)
 
 # text_encoder = CLIPTextModel.from_pretrained(pretrained_model_name_or_path='openai/clip-vit-large-patch14', torch_dtype=torch.float32, cache_dir=os.getenv("cache_dir", "./models"))
 TEXT_ENCODER_PATH = './models/models--openai--clip-vit-large-patch14/snapshots/8d052a0f05efbaefbc9e8786ba291cfdf93e5bff'
-text_encoder = CLIPTextModel.from_pretrained(TEXT_ENCODER_PATH, local_files_only=True)
+text_encoder = CLIPTextModel.from_pretrained(
+    TEXT_ENCODER_PATH, local_files_only=True)
 text_encoder = text_encoder.to(device)
 
 # 3. The UNet model for generating the latents.
@@ -64,7 +66,8 @@ unet = unet.to(device)
 
 # 4. Create a scheduler for inference
 # Handle denoising, makes things clean
-scheduler = LMSDiscreteScheduler(beta_start=0.00085, beta_end=0.012, beta_schedule='scaled_linear', num_train_timesteps=1000)
+scheduler = LMSDiscreteScheduler(
+    beta_start=0.00085, beta_end=0.012, beta_schedule='scaled_linear', num_train_timesteps=1000)
 
 
 AST_PATH = './models/models--MIT--ast-finetuned-audioset-10-10-0.4593/snapshots/c1c0c663ecf7a4de90db1bc2f8d4e2d38a4f93b4'
@@ -79,10 +82,10 @@ def get_text_embeds(prompt):
 
     # Tokenize the text and create embeddings
     text_input = tokenizer(text=prompt,
-                            padding='max_length',
-                            max_length=tokenizer.model_max_length,
-                            truncation=True,
-                            return_tensors='pt')
+                           padding='max_length',
+                           max_length=tokenizer.model_max_length,
+                           truncation=True,
+                           return_tensors='pt')
 
     print(text_input)
     print(text_input.input_ids.shape)
@@ -95,15 +98,17 @@ def get_text_embeds(prompt):
     # Unconditional embeddings, empty string extend to same length
     # For the purpose of classifier-free guidance
     unconditional_input = tokenizer(text=[''] * len(prompt),
-                            padding='max_length',
-                            max_length=tokenizer.model_max_length,
-                            return_tensors='pt')
+                                    padding='max_length',
+                                    max_length=tokenizer.model_max_length,
+                                    return_tensors='pt')
 
     # Concatenating text embeddings with unconditional embeddings
     with torch.no_grad():
-        unconditional_embeddings = text_encoder(unconditional_input.input_ids.to(device))[0]
+        unconditional_embeddings = text_encoder(
+            unconditional_input.input_ids.to(device))[0]
 
-    final_text_embeddings = torch.cat([unconditional_embeddings, text_embeddings])
+    final_text_embeddings = torch.cat(
+        [unconditional_embeddings, text_embeddings])
     print(final_text_embeddings)
     print(final_text_embeddings.shape)
     return final_text_embeddings
@@ -112,9 +117,11 @@ def get_text_embeds(prompt):
 # print(test_embed.shape)
 # print(test_embed)
 
+
 def produce_latents(embeddings, height=512, width=512, num_inference_steps=50, guidance_scale=7.5, latents=None, return_all_latents=False):
     if latents is None:
-        latents = torch.randn((embeddings.shape[0] // 2, unet.in_channels, height // 8, width // 8))
+        latents = torch.randn(
+            (embeddings.shape[0] // 2, unet.in_channels, height // 8, width // 8))
     latents = latents.to(device)
 
     latent_hist = [latents]
@@ -130,11 +137,13 @@ def produce_latents(embeddings, height=512, width=512, num_inference_steps=50, g
 
         # predict the noise residual
         with torch.no_grad():
-            noise_pred = unet(latent_model_input, t, encoder_hidden_states=embeddings)['sample']
+            noise_pred = unet(latent_model_input, t,
+                              encoder_hidden_states=embeddings)['sample']
 
         # perform guidance
         noise_pred_uncond, noise_pred_text = noise_pred.chunk(2)
-        noise_pred = noise_pred_uncond + guidance_scale * (noise_pred_text - noise_pred_uncond)
+        noise_pred = noise_pred_uncond + guidance_scale * \
+            (noise_pred_text - noise_pred_uncond)
 
         # compute the previous noisy sample x_t -> x_t-1
         latents = scheduler.step(noise_pred, t, latents)['prev_sample']
@@ -146,6 +155,7 @@ def produce_latents(embeddings, height=512, width=512, num_inference_steps=50, g
 
     all_latents = torch.cat(latent_hist, dim=0)
     return all_latents
+
 
 def decode_img_latents(latents):
     latents = 1 / 0.18215 * latents
@@ -174,10 +184,10 @@ def prompt_to_img(prompts,
 
     # Text embeds -> img latents
     latents = produce_latents(embeddings=text_embeddings,
-                            height=height, width=width,
-                            latents=latents,
-                            num_inference_steps=num_inference_steps,
-                            guidance_scale=guidance_scale)
+                              height=height, width=width,
+                              latents=latents,
+                              num_inference_steps=num_inference_steps,
+                              guidance_scale=guidance_scale)
 
     # Img latents -> imgs
     imgs = decode_img_latents(latents)
@@ -186,24 +196,23 @@ def prompt_to_img(prompts,
 
 
 def audio_to_img(filename,
-                  height=512, width=512,
-                  num_inference_steps=50,
-                  guidance_scale=7.5,
-                  latents=None,
-                  return_all_latents=False,
-                  batch_size=2):
-
+                 height=512, width=512,
+                 num_inference_steps=50,
+                 guidance_scale=7.5,
+                 latents=None,
+                 return_all_latents=False,
+                 batch_size=2):
 
     # audiofile -> audio embeds
     audio_embeddings = get_audio_embeds(filename)
 
     # audio embeds -> img latents
     latents = produce_latents(embeddings=audio_embeddings,
-                            height=height, width=width,
-                            latents=latents,
-                            num_inference_steps=num_inference_steps,
-                            guidance_scale=guidance_scale,
-                            return_all_latents=return_all_latents)
+                              height=height, width=width,
+                              latents=latents,
+                              num_inference_steps=num_inference_steps,
+                              guidance_scale=guidance_scale,
+                              return_all_latents=return_all_latents)
 
     # Img latents -> imgs
     # imgs = decode_img_latents(latents)
@@ -215,7 +224,6 @@ def audio_to_img(filename,
         all_imgs.extend(imgs)
 
     return all_imgs
-
 
 
 def get_audio_embeds(filename):
@@ -243,6 +251,7 @@ def imgs_to_video(imgs, video_name='video.mp4', fps=15):
         video.write(cv2.cvtColor(np.array(tmp_img), cv2.COLOR_RGB2BGR))
     video.release()
 
+
 def display_video(file_path, width=512):
     os.system(f'ffmpeg -i {file_path} -vcodec libx264 {"./" + file_path}')
     mp4 = open(f'./{file_path}', 'rb').read()
@@ -253,7 +262,6 @@ def display_video(file_path, width=512):
     <source src="{}" type="video/mp4">
 </video>
  """.format(width, data_url))
-
 
 
 plt_img = prompt_to_img("", 512, 512, 20)[0]

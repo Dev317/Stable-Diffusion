@@ -13,18 +13,21 @@ cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 BUCKET_NAME = os.environ.get('BUCKET_NAME', 'pil-test-image')
 
+
 @app.route('/api/audio2image', methods=['POST'])
 def get_image():
     dirname = 'upload'
     save_path = os.path.join(dirname, "temp.wav")
     request.files['wav_file'].save(save_path)
 
-    model = tf.keras.models.load_model('./models/audio_class/weights.best.basic_cnn.hdf5')
+    model = tf.keras.models.load_model(
+        './models/audio_class/weights.best.basic_cnn.hdf5')
     category, probabilities_dict = predict(save_path, model)
 
     prompt = f"Create an image of the following category: {category}"
 
-    plt_img = prompt_to_img(prompts=prompt, height=512, width=512, num_inference_steps=5)[0]
+    plt_img = prompt_to_img(prompts=prompt, height=512,
+                            width=512, num_inference_steps=5)[0]
     buffered = BytesIO()
     plt_img.save(buffered, format="JPEG")
     buffered.seek(0)
@@ -39,7 +42,7 @@ def get_image():
         "image_title": image_title,
         "category": category,
         "width": 512,
-        "height" : 512,
+        "height": 512,
         "probability": probabilities_dict[category]
     })
 
